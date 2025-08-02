@@ -10,11 +10,11 @@ class DamageNumber:
     def __init__(self, pos, damage_amount):
         self.pos = np.array(pos, dtype=np.float32)
         self.damage = str(damage_amount)
-        self.timer = 60  # Float for 60 frames (1 second at 60fps)
+        self.timer = 60  
         self.start_timer = self.timer
         
     def update(self):
-        self.pos[1] -= 0.02  # Float upward
+        self.pos[1] -= 0.02  
         self.timer -= 1
         
     def draw(self, screen, mode7):
@@ -23,18 +23,18 @@ class DamageNumber:
             
         screen_x, screen_y, scale = mode7.project(self.pos)
         if scale > 0:
-            # Create font if needed
+            
             font = pg.font.Font(None, max(16, int(scale // 8)))
             
-            # Fade out over time
-            alpha = int(255 * (self.timer / self.start_timer))
-            color = (255, 255, 255)  # White damage numbers
             
-            # Render text
+            alpha = int(255 * (self.timer / self.start_timer))
+            color = (255, 255, 255)  
+            
+            
             text_surface = font.render(self.damage, True, color)
             text_rect = text_surface.get_rect(center=(int(screen_x), int(screen_y)))
             
-            # Create surface with alpha for fading
+            
             fade_surface = pg.Surface(text_surface.get_size())
             fade_surface.set_alpha(alpha)
             fade_surface.blit(text_surface, (0, 0))
@@ -77,7 +77,7 @@ class Character:
             health_index = 0
         if self.health <= 4 and self.health >= 1:
             health_index = 5
-        # Position in top left instead of top right
+        
         x = 10
         y = 10
         screen.blit(self.health_bar_frames[health_index], (x, y))
@@ -102,7 +102,7 @@ class Bullet:
         self.start_pos = np.array(self.pos, dtype=np.float32)
         self.active = True
         self.weapon_type = weapon_type
-        #self.app = app
+        
 
     def update(self):
         self.pos += self.direction * self.speed
@@ -113,13 +113,12 @@ class Bullet:
         screen_x, screen_y, scale = mode7.project(self.pos)
         if scale > 0:
             radius = max(2, scale // 15)
-            # Different colors per weapon
             if self.weapon_type == RIFLE:
-                color = (255, 255, 0)  # Yellow for Glock
+                color = (255, 255, 0)  
             elif self.weapon_type == SHOTGUN:
-                color = (255, 165, 0)  # Orange for Uzi
+                color = (255, 165, 0)  
             else:
-                color = (0, 0, 0)  # Default black
+                color = (0, 0, 0)  
             pg.draw.circle(screen, color, (int(screen_x), int(screen_y)), radius)
 
 class Game:
@@ -134,15 +133,15 @@ class Game:
         self.wave_sound = pg.mixer.Sound("music/level_up.mp3")
         self.explosion_sound = pg.mixer.Sound("music/explosion.wav")
         
-        # Muzzle flash system
+        
         self.muzzle_flash_timer = 0
         self.muzzle_flash_pos = None
         self.muzzle_flash_weapon = None
         
-        # Damage numbers system
+        
         self.damage_numbers = []
         
-        # Wave transition system
+        
         self.wave_flash_timer = 0
         
         self.spawn_wave(self.wave)
@@ -182,15 +181,15 @@ class Game:
             case 27:
                 self.mode7.set_textures('textures/ugly_sky.png', 'textures/gravel_road.png')
             case 30:
-                self.mode7.set_textures('textures/sky1.png', 'textures/ground_rail_lowres.png')
+                self.mode7.set_textures('textures/sky1.png', 'textures/gravel_road.png')
             case 33:
-                self.mode7.set_textures('textures/cloudy_sky.png', 'textures/ground_graveldirt_lowres.png')
+                self.mode7.set_textures('textures/cloudy_sky.png', 'textures/factory_floor.png')
             case 36:
-                self.mode7.set_textures('textures/dark_sky.png', 'textures/ground_halfsnow_lowres.png')
+                self.mode7.set_textures('textures/dark_sky.png', 'textures/factory_floor.png')
             case 39:
-                self.mode7.set_textures('textures/sky1.png', 'textures/ground_sea_lowres.png')
+                self.mode7.set_textures('textures/sky1.png', 'textures/sand.png')
             case 42:
-                self.mode7.set_textures('textures/cloudy_sky.png', 'textures/ground_dirt_lowres.png')
+                self.mode7.set_textures('textures/cloudy_sky.png', 'textures/sand.png')
             case _:
                 pass
 
@@ -202,9 +201,9 @@ class Game:
             for enemy in self.zombies:
                 if enemy.check_collision(proj):
                     proj.active = False
-                    # Create damage number
+                   
                     damage_pos = enemy.pos.copy()
-                    damage_pos[1] -= 0.5  # Slightly above enemy
+                    damage_pos[1] -= 0.5  
                     self.damage_numbers.append(DamageNumber(damage_pos, 50))
                     
                     if not enemy.alive:
@@ -238,23 +237,23 @@ class Game:
 
         self.drops = [d for d in self.drops if not d.collected]
 
-        # Update damage numbers
+      
         for damage_num in self.damage_numbers:
             damage_num.update()
         self.damage_numbers = [d for d in self.damage_numbers if not d.is_expired()]
 
-        # Update muzzle flash timer
+        
         if self.muzzle_flash_timer > 0:
             self.muzzle_flash_timer -= 1
             
-        # Update wave flash timer
+        
         if self.wave_flash_timer > 0:
             self.wave_flash_timer -= 1
 
         if len(self.zombies) == 0:
             self.wave += 1
-            # Trigger wave transition effect
-            self.wave_flash_timer = 30  # Flash for 30 frames (0.5 seconds)
+            
+            self.wave_flash_timer = 30  
             self.wave_sound.play()
             self.spawn_wave(self.wave)
 
@@ -266,43 +265,39 @@ class Game:
         for drop in self.drops:
             drop.draw(screen, self.mode7)
         
-        # Draw damage numbers
+        
         for damage_num in self.damage_numbers:
             damage_num.draw(screen, self.mode7)
         
-        # Draw muzzle flash
+        
         if self.muzzle_flash_timer > 0 and self.muzzle_flash_pos is not None:
             screen_x, screen_y, scale = self.mode7.project(self.muzzle_flash_pos)
             if scale > 0:
                 flash_size = max(10, scale // 8)
-                # Different colors per weapon
+                
                 if self.muzzle_flash_weapon == RIFLE:
-                    flash_color = (255, 255, 255)  # Bright white for Glock
+                    flash_color = (255, 255, 255)  
                 else:
-                    flash_color = (255, 200, 100)  # Warm yellow for Uzi
+                    flash_color = (255, 200, 100)  
                 pg.draw.circle(screen, flash_color, (int(screen_x), int(screen_y)), flash_size)
-                # Add smaller inner circle for more intensity
+                
                 pg.draw.circle(screen, (255, 255, 255), (int(screen_x), int(screen_y)), flash_size // 2)
 
 
     def shoot_rifle(self, pos, angle):
-        # Glock: Single accurate shot, higher damage, faster bullets
         offset = 0.5 if any(np.linalg.norm(enemy.pos - pos) < 2.0 for enemy in self.zombies) else 2.0
         self.bullets.append(Bullet(pos, angle, speed=0.8, offset_distance=offset, weapon_type=RIFLE))
         
-        # Trigger muzzle flash
-        self.muzzle_flash_timer = 5  # Flash for 5 frames
+        
+        self.muzzle_flash_timer = 5  
         self.muzzle_flash_pos = pos.copy()
         self.muzzle_flash_weapon = RIFLE
 
     def shoot_shotgun(self, pos, angle):
-        # Uzi: Single bullet, fast firing, less accurate, lower damage
         offset = 0.5 if any(np.linalg.norm(enemy.pos - pos) < 2.0 for enemy in self.zombies) else 2.0
-        # Add slight random spread for less accuracy
         spread = random.uniform(-0.1, 0.1)
         self.bullets.append(Bullet(pos, angle + spread, speed=0.7, offset_distance=offset, weapon_type=SHOTGUN))
         
-        # Trigger muzzle flash
-        self.muzzle_flash_timer = 3  # Shorter flash for rapid fire
+        self.muzzle_flash_timer = 3  
         self.muzzle_flash_pos = pos.copy()
         self.muzzle_flash_weapon = SHOTGUN

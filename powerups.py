@@ -7,7 +7,7 @@ class Drop:
     def __init__(self, pos):
         self.pos = np.array(pos, dtype=np.float32)
         self.collected = False
-        self.texture = pg.Surface((20, 20))  # Placeholder, can replace with textures
+        self.texture = pg.Surface((20, 20))  
 
     def update(self, character_pos):
         if np.linalg.norm(self.pos - character_pos) < 0.6:
@@ -29,14 +29,14 @@ class HealthDrop(Drop):
         super().__init__(pos)
         self.texture = pg.image.load("textures/health.png").convert_alpha()
         self.player = player
-        self.app = app  # added for sound
+        self.app = app  
 
     def on_pickup(self):
         print("Medical supplies found!")
         if self.player.health < self.player.max_health:
             self.player.health += 5
             self.player.health = max(0, min(self.player.health, self.player.max_health))
-            self.app.health_sound.play()  # play sound
+            self.app.health_sound.play()  
 
 
 class ShotgunDrop(Drop):

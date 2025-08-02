@@ -85,12 +85,12 @@ class Zombie:
         if scale > 0:
             scaled_texture = pg.transform.scale(self.texture, (scale, scale))
             
-            # Hit flash effect - flash white when hit
+            
             if self.hit_timer > 0:
-                # Create white flash overlay
+               
                 flash_surface = pg.Surface((scale, scale))
                 flash_surface.fill((255, 255, 255))
-                flash_surface.set_alpha(150)  # Semi-transparent white
+                flash_surface.set_alpha(150)  
                 screen.blit(scaled_texture, (int(screen_x) - scale // 2, int(screen_y) - scale // 2))
                 screen.blit(flash_surface, (int(screen_x) - scale // 2, int(screen_y) - scale // 2))
             else:
@@ -138,10 +138,10 @@ class RunnerZombie(Zombie):
     def __init__(self, pos):
         super().__init__(pos, speed=0.04, min_distance=0.5, damage=4)
         self.texture = pg.image.load('textures/zombie_nuclear.png').convert_alpha()
-        self.hp = 1  # Dies on contact
+        self.hp = 1  
         self.max_hp = 1
-        self.shoot_delay = None  # Not used
-        self.bullets = []  # No bullets
+        self.shoot_delay = None  
+        self.bullets = []  
 
     def update(self, character_pos):
         direction = character_pos - self.pos
@@ -151,8 +151,8 @@ class RunnerZombie(Zombie):
             direction /= distance
             self.pos += direction * self.speed
 
-        # No shooting
+        
         self.bullets = []
 
     def shoot(self, character_pos):
-        pass  # Disable shooting 
+        pass  

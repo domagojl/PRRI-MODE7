@@ -27,12 +27,11 @@ class GameEngine:
         self.powerup_icon = pg.transform.scale(self.powerup_icon, (128, 128))
         self.powerup_sound = pg.mixer.Sound("music/clock.mp3")
         
-        # Fire rate system
         self.last_shot_time = 0
         self.firing = False
         self.fire_rates = {
-            RIFLE: 200,    # Glock: 200ms between shots (5 shots/sec)
-            SHOTGUN: 80    # Uzi: 80ms between shots (12.5 shots/sec)
+            RIFLE: 200,    
+            SHOTGUN: 80    
         }
 
         self.start_time = time.time()
@@ -65,10 +64,10 @@ class GameEngine:
         self.equipment_frame = pg.image.load("textures/frame.png").convert_alpha()
         self.equipment_frame = pg.transform.scale(self.equipment_frame, (300, 200))
         self.firing = False
-        # Different sounds for each weapon
+        
         self.weapon_sounds = {
-            RIFLE: pg.mixer.Sound("music/desert_eagle.mp3"),    # Glock sound
-            SHOTGUN: pg.mixer.Sound("music/machinegun.mp3")     # Uzi sound
+            RIFLE: pg.mixer.Sound("music/desert_eagle.mp3"),    
+            SHOTGUN: pg.mixer.Sound("music/machinegun.mp3")     
         }
         self.health_sound = pg.mixer.Sound("music/hp_up.wav")
         pg.mixer.music.load("music/main_menu.mp3")
@@ -113,10 +112,10 @@ class GameEngine:
         if current_time - self.last_shot_time >= self.fire_rates[self.equipment]:
             self.last_shot_time = current_time
             if self.equipment == RIFLE:
-                self.weapon_sounds[RIFLE].play()  # Desert Eagle sound for Glock
+                self.weapon_sounds[RIFLE].play()  
                 self.game.shoot_rifle(self.mode7.pos, self.mode7.angle)
             elif self.equipment == SHOTGUN:
-                self.weapon_sounds[SHOTGUN].play()  # Machine gun sound for Uzi
+                self.weapon_sounds[SHOTGUN].play()  
                 self.game.shoot_shotgun(self.mode7.pos, self.mode7.angle)
 
     def update(self):
@@ -144,7 +143,7 @@ class GameEngine:
                 self.equipment = RIFLE
                 del self.equipment_timer
 
-            # Automatic firing for held spacebar
+            
             if self.firing:
                 self.try_shoot()
 
@@ -164,18 +163,18 @@ class GameEngine:
         box_x, box_y = self.screen.get_width() - 220, 20
         self.screen.blit(self.progression_box, (box_x, box_y))
 
-        # Smaller font to fit within panel
+        
         font = pg.font.Font("fonts/menu_font.ttf", 24)
         color = (255, 220, 180)
 
-        # Text elements
+        
         wave_text = font.render(f"DAY: {self.game.wave}", True, color)
         zombies_text = font.render(f"ZOMBIES: {len(self.game.zombies)}", True, color)
 
-        # Position text more to the left and center within panel
-        text_x = box_x + 30  # Shifted more to the left
         
-        # Vertical positions with good spacing
+        text_x = box_x + 30  
+        
+        
         wave_y = box_y + 60
         zombies_y = box_y + 100
 
@@ -232,19 +231,19 @@ class GameEngine:
         self.screen.blit(icon, (icon_x, icon_y))
 
     def draw_crosshair(self):
-        # Simple crosshair at screen center
+        
         center_x, center_y = self.screen.get_width() // 2, self.screen.get_height() // 2
         crosshair_size = 8
-        crosshair_color = (255, 255, 255)  # White
+        crosshair_color = (255, 255, 255)  
         
-        # Draw cross lines
+      
         pg.draw.line(self.screen, crosshair_color, 
                     (center_x - crosshair_size, center_y), 
                     (center_x + crosshair_size, center_y), 2)
         pg.draw.line(self.screen, crosshair_color, 
                     (center_x, center_y - crosshair_size), 
                     (center_x, center_y + crosshair_size), 2)
-        # Small center dot
+       
         pg.draw.circle(self.screen, crosshair_color, (center_x, center_y), 1)
 
     def draw(self):
@@ -257,11 +256,11 @@ class GameEngine:
             self.draw_equipment_ui()
             self.draw_crosshair()
             
-            # Draw wave transition flash
+            
             if self.game.wave_flash_timer > 0:
-                flash_alpha = int(100 * (self.game.wave_flash_timer / 30))  # Fade out
+                flash_alpha = int(100 * (self.game.wave_flash_timer / 30)) 
                 flash_surface = pg.Surface(self.screen.get_size())
-                flash_surface.fill((255, 255, 200))  # Warm yellow flash
+                flash_surface.fill((255, 255, 200))  
                 flash_surface.set_alpha(flash_alpha)
                 self.screen.blit(flash_surface, (0, 0))
             
