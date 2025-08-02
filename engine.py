@@ -23,7 +23,7 @@ class GameEngine:
         self.speed_timer = 0
         self.equipment = RIFLE
         self.equipment_timer = 0
-        self.powerup_icon = pg.image.load("textures/Steampunk_valve_and_pipe.png").convert_alpha()
+        self.powerup_icon = pg.image.load("textures/panel.png").convert_alpha()
         self.powerup_icon = pg.transform.scale(self.powerup_icon, (128, 128))
         self.powerup_sound = pg.mixer.Sound("music/clock.mp3")
         

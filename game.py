@@ -167,7 +167,7 @@ class Game:
             case 6:
                 self.mode7.set_textures('textures/ugly_sky.png', 'textures/volcanic_ash.png')
             case 9:
-                self.mode7.set_textures('textures/ugly_sky.png', 'textures/radiation.png')
+                self.mode7.set_textures('textures/ugly_sky.png', 'textures/radioation.png')
             case 12:
                 self.mode7.set_textures('textures/sky1.png', 'textures/floor_1.png')
             case 15:
