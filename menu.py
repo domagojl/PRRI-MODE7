@@ -20,8 +20,13 @@ class Menu:
         button_y_start = self.app.screen.get_height() // 2 + 100
 
         self.buttons = [
+<<<<<<< HEAD
             {'text': 'Begin Survival', 'rect': pg.Rect(button_x, button_y_start, button_width, button_height), 'action': self.start_game},
             {'text': 'Quit', 'rect': pg.Rect(button_x, button_y_start + (button_height + 50), button_width, button_height), 'action': self.exit_game}
+=======
+            {'text': 'Begin Survival (Enter)', 'rect': pg.Rect(button_x, button_y_start, button_width, button_height), 'action': self.start_game},
+            {'text': 'Quit (Esc)', 'rect': pg.Rect(button_x, button_y_start + (button_height + 50), button_width, button_height), 'action': self.exit_game}
+>>>>>>> 1f1382f (Small changes)
         ]
 
     def update(self):
@@ -34,6 +39,7 @@ class Menu:
     def draw(self):
         print("Drawing survival menu.")
         self.app.screen.blit(self.background, (0, 0))
+<<<<<<< HEAD
         title_1 = self.title_font.render("Dead", True, self.grey)
         title_2 = self.title_font.render("Zone", True, self.grey)
 
@@ -43,6 +49,21 @@ class Menu:
         self.screen.blit(title_1, (x_center - title_1.get_width() // 2, start_y))
 
         self.screen.blit(title_2, (x_center - title_2.get_width() // 2, start_y + title_1.get_height() + 10))
+=======
+        # Single-line game title with auto-scaling to fit width
+        title_surface = self.title_font.render("Dead Zone", True, self.grey)
+        screen_w, screen_h = self.screen.get_width(), self.screen.get_height()
+        max_title_width = int(screen_w * 0.9)
+        if title_surface.get_width() > max_title_width:
+            scale_ratio = max_title_width / title_surface.get_width()
+            new_w = max(1, int(title_surface.get_width() * scale_ratio))
+            new_h = max(1, int(title_surface.get_height() * scale_ratio))
+            title_surface = pg.transform.smoothscale(title_surface, (new_w, new_h))
+
+        x_center = self.screen.get_width() // 2
+        start_y = self.screen.get_height() // 10
+        self.screen.blit(title_surface, (x_center - title_surface.get_width() // 2, start_y))
+>>>>>>> 1f1382f (Small changes)
         for button in self.buttons:
             text = self.font.render(button['text'], True, (255, 255, 255))
             text_rect = text.get_rect(center=button['rect'].center)
