@@ -5,6 +5,5 @@ A Mode 7 based Shot 'em up airbattle game developed by Domagoj Lovošević at th
 
 # Credits
 
-This game is based on [Stanislav Petrov's implementation](https://github.com/StanislavPetrovV/Mode7) licensed under the MIT license.
 
-Some of the used graphics have been generated using AI (DALL-E).
+All of the used graphics have been generated using AI (DALL-E).
